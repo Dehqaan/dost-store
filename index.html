@@ -1,382 +1,725 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="color-scheme" content="light dark" />
-<link rel="icon" href="data:," />
-<title>DOST — Dehqan Online Store</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<style>
-  :root{
-    --teal-950:#06231f;
-    --teal-900:#08322b;
-    --teal-800:#0b4438;
-    --teal-600:#0e7a63;
-    --teal-500:#12a183;
-    --gold:#e8b34b;
-    --gold-soft:#f5cf7d;
-    --green:#22b573;
-    --green-dark:#15935b;
-    --ink:#10201c;
-    --muted:#5c6f6a;
-    --card-bg:rgba(255,255,255,.82);
-    --card-border:rgba(255,255,255,.65);
-    --chip-bg:rgba(255,255,255,.7);
-    --page-bg:#e9f4f0;
-    --shadow:0 10px 28px rgba(6,50,42,.14);
-    --tg-bg:transparent;
-    color-scheme:light;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --ink:#eef7f3;
-      --muted:#a7bfb8;
-      --card-bg:rgba(13,52,44,.78);
-      --card-border:rgba(255,255,255,.14);
-      --chip-bg:rgba(13,52,44,.75);
-      --page-bg:#04150f;
-      --shadow:0 10px 28px rgba(0,0,0,.45);
-      color-scheme:dark;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOST — Dehqan Online Store | فروشگاه آنلاین دهقان</title>
+  <!-- Tailwind CSS & Vazirmatn Font -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: #0b0f19;
+      color: #f1f5f9;
+      scroll-behavior: smooth;
     }
-  }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    font-family:Tahoma,"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
-    background:
-      radial-gradient(720px 380px at 110% -60px, rgba(232,179,75,.28), transparent 60%),
-      radial-gradient(640px 420px at -120px 180px, rgba(18,161,131,.22), transparent 60%),
-      linear-gradient(180deg, var(--page-bg), var(--page-bg));
-    color:var(--ink);
-    min-height:100vh;
-  }
-  .wrap{max-width:760px;margin:0 auto;padding:0 14px 28px}
-  header{
-    position:sticky;top:0;z-index:50;
-    margin:0 -14px;padding:16px 14px 14px;
-    background:linear-gradient(135deg,var(--teal-900) 0%,var(--teal-800) 55%,var(--teal-600) 130%);
-    color:#fff;
-    border-bottom-left-radius:22px;border-bottom-right-radius:22px;
-    box-shadow:0 12px 30px rgba(6,50,42,.35);
-    backdrop-filter:blur(10px);
-  }
-  .brand{display:flex;align-items:center;gap:12px}
-  .logo{
-    width:52px;height:52px;flex:0 0 52px;border-radius:16px;
-    display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.06));
-    border:1px solid rgba(255,255,255,.35);
-    font-size:26px;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 14px rgba(0,0,0,.25);
-  }
-  .brand h1{margin:0;font-size:19px;line-height:1.35;font-weight:800;letter-spacing:.2px}
-  .brand h1 .gold{color:var(--gold-soft)}
-  .brand p{margin:4px 0 0;font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.88)}
-  .trust{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
-  .trust span{
-    font-size:11.5px;padding:4px 10px;border-radius:999px;
-    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
-    color:#fff;
-  }
-  .search{margin-top:16px;position:relative}
-  .search input{
-    width:100%;padding:13px 42px 13px 14px;
-    border-radius:14px;border:1px solid var(--card-border);
-    background:var(--card-bg);backdrop-filter:blur(10px);
-    font:inherit;font-size:15px;color:var(--ink);
-    box-shadow:var(--shadow);outline:none;
-  }
-  .search input::placeholder{color:var(--muted)}
-  .search input:focus{border-color:var(--teal-500);box-shadow:0 0 0 3px rgba(18,161,131,.25)}
-  .search .ico{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:17px;pointer-events:none}
-  .chips{display:flex;gap:8px;overflow-x:auto;padding:14px 2px 6px;scrollbar-width:none;-ms-overflow-style:none}
-  .chips::-webkit-scrollbar{display:none}
-  .chip{
-    flex:0 0 auto;cursor:pointer;border:1px solid var(--card-border);
-    background:var(--chip-bg);backdrop-filter:blur(8px);
-    color:var(--ink);font:inherit;font-size:13.5px;font-weight:700;
-    padding:8px 14px;border-radius:999px;
-    display:inline-flex;align-items:center;gap:6px;
-    transition:background .18s,color .18s,border-color .18s,transform .12s;
-  }
-  .chip:active{transform:scale(.96)}
-  .chip .cnt{
-    font-size:11px;font-weight:800;min-width:20px;text-align:center;
-    background:rgba(14,122,99,.14);color:var(--teal-600);
-    border-radius:999px;padding:1px 6px;
-  }
-  @media (prefers-color-scheme: dark){ .chip .cnt{color:var(--gold-soft);background:rgba(232,179,75,.16)} }
-  .chip.active{
-    background:linear-gradient(135deg,var(--teal-600),var(--teal-500));
-    color:#fff;border-color:transparent;
-    box-shadow:0 6px 16px rgba(14,122,99,.35);
-  }
-  .chip.active .cnt{background:rgba(255,255,255,.25);color:#fff}
-  .grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:10px}
-  @media (min-width:560px){ .grid{grid-template-columns:1fr 1fr} }
-  .card{
-    background:var(--card-bg);backdrop-filter:blur(12px);
-    border:1px solid var(--card-border);border-radius:18px;
-    box-shadow:var(--shadow);
-    padding:16px 16px 14px;
-    display:flex;flex-direction:column;gap:8px;
-    position:relative;overflow:hidden;
-  }
-  .card::before{
-    content:"";position:absolute;inset-inline:0;top:0;height:3px;
-    background:linear-gradient(90deg,var(--gold),var(--teal-500),var(--gold));
-    opacity:.85;
-  }
-  .card-top{display:flex;align-items:flex-start;gap:12px}
-  .picon{
-    width:58px;height:58px;flex:0 0 58px;border-radius:16px;
-    display:flex;align-items:center;justify-content:center;font-size:30px;
-    background:linear-gradient(145deg,rgba(232,179,75,.22),rgba(18,161,131,.16));
-    border:1px solid rgba(232,179,75,.35);
-  }
-  .card h3{margin:2px 0 0;font-size:16.5px;line-height:1.5;font-weight:800}
-  .duration{
-    display:inline-block;margin-top:5px;font-size:11.5px;font-weight:700;
-    color:var(--teal-600);background:rgba(14,122,99,.12);
-    padding:2px 9px;border-radius:999px;
-  }
-  @media (prefers-color-scheme: dark){ .duration{color:var(--gold-soft);background:rgba(232,179,75,.14)} }
-  .idbadge{
-    display:inline-block;margin-top:5px;margin-inline-start:5px;font-size:11px;font-weight:700;
-    color:#8a5a00;background:rgba(232,179,75,.28);
-    padding:2px 9px;border-radius:999px;
-  }
-  @media (prefers-color-scheme: dark){ .idbadge{color:var(--gold-soft)} }
-  .blurb{margin:0;font-size:13.5px;line-height:1.9;color:var(--muted);flex:1}
-  .price-row{display:flex;align-items:baseline;gap:6px;margin-top:2px}
-  .price{font-size:21px;font-weight:900;color:var(--teal-600)}
-  @media (prefers-color-scheme: dark){ .price{color:var(--gold-soft)} }
-  .price-row small{font-size:12.5px;color:var(--muted);font-weight:700}
-  .buy{
-    margin-top:6px;display:block;text-align:center;text-decoration:none;
-    background:linear-gradient(135deg,var(--green),var(--green-dark));
-    color:#fff;font-size:16px;font-weight:800;
-    padding:12px 10px;border-radius:13px;border:none;cursor:pointer;font-family:inherit;width:100%;
-    box-shadow:0 8px 18px rgba(21,147,91,.35);
-    transition:transform .12s,box-shadow .18s;
-  }
-  .buy:active{transform:scale(.97)}
-  .empty{
-    display:none;text-align:center;padding:44px 16px;
-    background:var(--card-bg);border:1px dashed var(--card-border);
-    border-radius:18px;margin-top:10px;
-    font-size:16px;font-weight:700;color:var(--muted);line-height:2;
-  }
-  .empty.show{display:block}
-  .empty .big{font-size:40px;display:block}
-  footer{margin-top:22px;text-align:center}
-  .pay{
-    background:var(--card-bg);backdrop-filter:blur(10px);
-    border:1px solid var(--card-border);border-radius:16px;box-shadow:var(--shadow);
-    padding:13px 14px;font-size:13px;line-height:1.9;color:var(--ink);
-  }
-  .pay b{color:var(--teal-600)}
-  @media (prefers-color-scheme: dark){ .pay b{color:var(--gold-soft)} }
-  .support{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.9}
-  .count-line{margin-top:10px;font-size:12px;color:var(--muted);text-align:center}
-</style>
+    .glass {
+      background: rgba(30, 41, 59, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.25s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 12px 30px -10px rgba(56, 189, 248, 0.25);
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .cat-active {
+      background: linear-gradient(90deg, #0284c7, #4f46e5) !important;
+      color: #fff !important;
+      border-color: transparent !important;
+    }
+  </style>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="logo" aria-hidden="true">🛍️</div>
-      <div>
-        <h1><span class="gold">DOST</span> — Dehqan Online Store</h1>
-        <p>اشتراک‌های اورجینال با کم‌ترین قیمت افغانستان ⚡ فعال‌سازی ۵ تا ۱۰ دقیقه‌ای روی ایمیل شخصی شما</p>
+<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-40 glass border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-2xl shadow-lg shadow-sky-500/20">
+          💎
+        </div>
+        <div>
+          <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-white">DOST</h1>
+          <p class="text-xs text-slate-400">Dehqan Online Store</p>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="#shop" class="hover:text-sky-400 transition" data-i18n="menu_shop">🛍 فروشگاه</a>
+        <a href="#guide" class="hover:text-sky-400 transition" data-i18n="menu_help">ℹ️ راهنمای خرید</a>
+        <a href="#faq" class="hover:text-sky-400 transition" data-i18n="faq_btn">❓ سؤالات پرتکرار</a>
+        <a href="#support" class="hover:text-sky-400 transition" data-i18n="menu_support">🎧 پشتیبانی</a>
+      </nav>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Switcher -->
+        <select id="langSelect" onchange="setLanguage(this.value)" class="bg-slate-800/90 text-xs sm:text-sm text-slate-200 rounded-xl px-3 py-2 border border-slate-700 focus:outline-none focus:border-sky-500">
+          <option value="fa">🇦🇫 فارسی</option>
+          <option value="ps">🇦🇫 پښتو</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
+
+        <a href="https://t.me/DostStoreBot" target="_blank" class="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-sky-500/20">
+          <span>🤖</span>
+          <span data-i18n="bot_btn">ربات تلگرام</span>
+        </a>
       </div>
     </div>
-    <div class="trust">
-      <span>✅ فعال‌سازی روی ایمیل شخصی</span>
-      <span>⚡ تحویل ۵ تا ۱۰ دقیقه‌ای</span>
-      <span>🎧 پشتیبانی سریع</span>
-    </div>
   </header>
-  <div class="search">
-    <span class="ico" aria-hidden="true">🔍</span>
-    <input id="searchInput" type="search" inputmode="search" placeholder="جستجوی محصول…" aria-label="جستجوی محصول" />
+
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden py-14 sm:py-20 border-b border-slate-800/80">
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[550px] h-[550px] bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 text-xs sm:text-sm font-medium mb-6">
+        <span>⚡</span>
+        <span data-i18n="hero_badge">تحویل فوری ۵ تا ۱۰ دقیقه روی ایمیل شخصی شما</span>
+      </div>
+
+      <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6">
+        <span data-i18n="hero_title_1">اشتراک‌های پریمیوم جهانی در</span>
+        <span class="gradient-text block mt-2">DOST — Dehqan Online Store</span>
+      </h2>
+
+      <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed" data-i18n="hero_sub">
+        پرفروش‌ترینِ فروشگاه: اشتراک ۱۸ ماهه‌ی Google Gemini فقط ۱۹۰ افغانی! اول پیش‌فاکتور را ببینید، بعد با خیال راحت با HesabPay، AtomaPay، Binance یا کارت‌به‌کارت پرداخت کنید.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="#shop" class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-sm sm:text-base shadow-xl shadow-sky-500/20 transition" data-i18n="cta_shop">
+          🛍 مشاهده محصولات و خرید
+        </a>
+        <a href="https://t.me/DostStoreBot?start=web" target="_blank" class="px-7 py-3.5 rounded-2xl glass hover:border-sky-500/50 text-slate-200 font-bold text-sm sm:text-base transition" data-i18n="cta_free_ai">
+          🎁 چت رایگان با هوش مصنوعی در ربات
+        </a>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-12 text-xs sm:text-sm">
+        <div class="glass p-3.5 rounded-2xl">⚡ <span data-i18n="badge_1">فعال‌سازی ۵ تا ۱۰ دقیقه</span></div>
+        <div class="glass p-3.5 rounded-2xl">📧 <span data-i18n="badge_2">روی ایمیل شخصی شما</span></div>
+        <div class="glass p-3.5 rounded-2xl">💳 <span data-i18n="badge_3">HesabPay / AtomaPay / تتر</span></div>
+        <div class="glass p-3.5 rounded-2xl">🛡 <span data-i18n="badge_4">پشتیبانی ۲۴ ساعته</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shop Section -->
+  <section id="shop" class="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-white" data-i18n="shop_heading">🛍 فروشگاه اشتراک‌ها</h3>
+        <p class="text-slate-400 text-sm mt-1" data-i18n="pick_product">محصول موردنظرتان را انتخاب کنید 👇</p>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative w-full md:w-80">
+        <input id="searchInput" type="text" oninput="renderProducts()" placeholder="🔍 جست‌وجوی محصول (مثلاً جیمینی یا vpn)..."
+          class="w-full bg-slate-900/90 border border-slate-700/80 rounded-2xl px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-sky-500" />
+      </div>
+    </div>
+
+    <!-- Category Pills -->
+    <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 no-scrollbar"></div>
+
+    <!-- Product Grid -->
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </section>
+
+  <!-- Buying Guide Section -->
+  <section id="guide" class="py-14 bg-slate-900/50 border-y border-slate-800/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-white" data-i18n="guide_title">ℹ️ راهنمای خرید — فقط ۲ دقیقه!</h3>
+        <p class="text-slate-400 text-sm mt-2" data-i18n="guide_sub">تا پیش‌فاکتور را تأیید نکنید، هیچ پولی نمی‌پردازید.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 text-sm">
+        <div class="glass p-5 rounded-2xl">
+          <div class="text-2xl mb-2">1️⃣</div>
+          <h4 class="font-bold text-white mb-1" data-i18n="step1_t">انتخاب محصول</h4>
+          <p class="text-slate-400 leading-relaxed" data-i18n="step1_d">از فروشگاه محصول را انتخاب کنید و مشخص کنید برای خودتان است یا هدیه برای دیگری.</p>
+        </div>
+        <div class="glass p-5 rounded-2xl">
+          <div class="text-2xl mb-2">2️⃣</div>
+          <h4 class="font-bold text-white mb-1" data-i18n="step2_t">ورود ایمیل یا آیدی</h4>
+          <p class="text-slate-400 leading-relaxed" data-i18n="step2_d">نام، ایمیل جیمیل (یا آیدی برای CapCut و فالوور) و شماره واتس‌اپ را وارد کنید.</p>
+        </div>
+        <div class="glass p-5 rounded-2xl">
+          <div class="text-2xl mb-2">3️⃣</div>
+          <h4 class="font-bold text-white mb-1" data-i18n="step3_t">بررسی پیش‌فاکتور و کد تخفیف</h4>
+          <p class="text-slate-400 leading-relaxed" data-i18n="step3_d">پیش‌فاکتور را ببینید؛ اگر کد تخفیف دارید یا پیشنهاد ویژه Canva را می‌خواهید اضافه کنید.</p>
+        </div>
+        <div class="glass p-5 rounded-2xl">
+          <div class="text-2xl mb-2">4️⃣</div>
+          <h4 class="font-bold text-white mb-1" data-i18n="step4_t">پرداخت آسان</h4>
+          <p class="text-slate-400 leading-relaxed" data-i18n="step4_d">با HesabPay، AtomaPay (شماره +93774565535)، کارت به کارت یا Binance پرداخت کنید.</p>
+        </div>
+        <div class="glass p-5 rounded-2xl">
+          <div class="text-2xl mb-2">5️⃣</div>
+          <h4 class="font-bold text-white mb-1" data-i18n="step5_t">ارسال رسید و فعال‌سازی</h4>
+          <p class="text-slate-400 leading-relaxed" data-i18n="step5_d">عکس رسید را در ربات تلگرام یا واتس‌اپ بفرستید؛ اشتراک ظرف ۵ تا ۱۰ دقیقه فعال می‌شود.</p>
+        </div>
+        <div class="glass p-5 rounded-2xl">
+          <div class="text-2xl mb-2">6️⃣</div>
+          <h4 class="font-bold text-white mb-1" data-i18n="step6_t">یادآوری خودکار تمدید</h4>
+          <p class="text-slate-400 leading-relaxed" data-i18n="step6_d">ربات تلگرام ما ۷، ۳ و ۱ روز قبل از پایان اشتراک به شما یادآوری می‌کند.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-14 max-w-4xl mx-auto px-4 sm:px-6 w-full">
+    <h3 class="text-2xl sm:text-3xl font-extrabold text-center text-white mb-8" data-i18n="faq_title">❓ سؤالات پرتکرار</h3>
+    <div id="faqList" class="space-y-3"></div>
+  </section>
+
+  <!-- Support & Payment Info Section -->
+  <section id="support" class="py-14 max-w-6xl mx-auto px-4 sm:px-6 w-full">
+    <div class="glass rounded-3xl p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-3" data-i18n="sup_heading">🎧 پشتیبانی و راه‌های پرداخت</h3>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6" data-i18n="sup_desc">
+          پاسخ‌گوی هوشمند هوش مصنوعی در ربات تلگرام شبانه‌روزی آماده پاسخ‌گویی است. همچنین برای کارهای فوری می‌توانید مستقیم در واتس‌اپ پیام بدهید.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="https://t.me/DostStoreBot" target="_blank" class="px-5 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-sm transition">
+            🤖 تیکت و پشتیبانی در تلگرام
+          </a>
+          <a href="https://wa.me/93774565535" target="_blank" class="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition">
+            📱 واتس‌اپ پشتیبانی (+93774565535)
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-3 text-sm">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <span class="text-slate-400">💳 HesabPay / AtomaPay:</span>
+          <button onclick="copyText('+93774565535')" class="font-mono text-sky-400 hover:underline dir-ltr">+93774565535 📋</button>
+        </div>
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <span class="text-slate-400">🏦 کارت به کارت:</span>
+          <span class="text-slate-200">هماهنگی در ربات یا واتس‌اپ</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">💎 Binance (USDT):</span>
+          <span class="text-emerald-400">شبکه Tron (TRC20) — تأیید خودکار</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout / Pre-Invoice Modal -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass w-full max-w-lg rounded-3xl p-6 sm:p-7 border border-slate-700 relative my-8">
+      <button onclick="closeModal()" class="absolute top-5 left-5 text-slate-400 hover:text-white text-xl">✕</button>
+
+      <!-- Step 1: Customer Info Form -->
+      <div id="modalStep1">
+        <div class="flex items-center gap-3 mb-4">
+          <span id="mProdIcon" class="text-3xl">💎</span>
+          <div>
+            <h4 id="mProdTitle" class="font-extrabold text-lg text-white"></h4>
+            <p id="mProdPrice" class="text-sky-400 text-sm font-bold"></p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm">
+          <!-- Gift Toggle -->
+          <div>
+            <label class="block text-slate-300 mb-2 font-medium" data-i18n="gift_ask">این خرید برای خودتان است یا هدیه به کسی دیگر؟</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" id="giftSelfBtn" onclick="setGift(false)" class="py-2.5 rounded-xl font-bold border border-sky-500 bg-sky-500/20 text-white">🛒 برای خودم</button>
+              <button type="button" id="giftOtherBtn" onclick="setGift(true)" class="py-2.5 rounded-xl font-bold border border-slate-700 bg-slate-800/60 text-slate-300">🎁 هدیه به دیگری</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-slate-300 mb-1" data-i18n="ask_name">👤 نام و نام خانوادگی:</label>
+            <input id="inpName" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-sky-500" placeholder="مثلاً: احمد رحیمی" />
+          </div>
+
+          <div>
+            <label id="lblCred" class="block text-slate-300 mb-1">📧 ایمیل جیمیل (برای فعال‌سازی):</label>
+            <input id="inpCred" type="text" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-sky-500" placeholder="name@gmail.com" />
+          </div>
+
+          <div>
+            <label class="block text-slate-300 mb-1" data-i18n="ask_contact">📱 شماره واتس‌اپ:</label>
+            <input id="inpPhone" type="tel" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-sky-500" placeholder="+937..." />
+          </div>
+
+          <p id="formError" class="text-rose-400 text-xs hidden"></p>
+
+          <div class="pt-2 flex flex-col sm:flex-row gap-2.5">
+            <button onclick="goToInvoice()" class="flex-1 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold transition">
+              🧾 مشاهده پیش‌فاکتور
+            </button>
+            <a id="directBotLink" href="#" target="_blank" class="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-center transition">
+              🤖 خرید مستقیم در ربات
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Pre-Invoice & Payment Selection -->
+      <div id="modalStep2" class="hidden space-y-4 text-sm">
+        <h4 class="font-extrabold text-lg text-white">🧾 پیش‌فاکتور سفارش شما</h4>
+        <div id="invoiceBox" class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2 text-slate-200"></div>
+
+        <!-- Order Bump (Canva Pro 15% Off) -->
+        <div id="bumpBox" class="hidden">
+          <button onclick="toggleBump()" id="bumpBtn" class="w-full py-2.5 px-3 rounded-xl border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold text-xs sm:text-sm transition flex items-center justify-between">
+            <span>➕ افزودن 🎨 Canva Pro (۱ ساله) با ۱۵٪ تخفیف — فقط 26 افغانی</span>
+            <span id="bumpStatus">افزودن</span>
+          </button>
+        </div>
+
+        <!-- Coupon Box -->
+        <div class="flex gap-2">
+          <input id="inpCoupon" type="text" placeholder="🎟 کد تخفیف دارید؟" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-white uppercase" />
+          <button onclick="applyCouponWeb()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-xs sm:text-sm">اعمال کد</button>
+        </div>
+        <p id="couponMsg" class="text-xs hidden"></p>
+
+        <!-- Payment Method Selector -->
+        <div>
+          <label class="block text-slate-300 mb-2 font-bold">💳 روش پرداخت را انتخاب کنید:</label>
+          <div class="grid grid-cols-2 gap-2" id="payMethodsGrid"></div>
+        </div>
+
+        <!-- Payment Instructions -->
+        <div id="payInstructions" class="bg-sky-950/40 border border-sky-500/30 rounded-2xl p-4 text-xs sm:text-sm space-y-2 text-slate-200"></div>
+
+        <div class="flex flex-col sm:flex-row gap-2.5 pt-2">
+          <a id="sendReceiptWa" href="#" target="_blank" class="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-center transition">
+            📸 ارسال رسید و ثبت در واتس‌اپ
+          </a>
+          <a id="sendReceiptTg" href="#" target="_blank" class="flex-1 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-center transition">
+            🤖 تکمیل و ارسال رسید در ربات
+          </a>
+        </div>
+        <button onclick="backToStep1()" class="w-full py-2 text-xs text-slate-400 hover:text-white">✏️ ویرایش مشخصات</button>
+      </div>
+    </div>
   </div>
-  <nav class="chips" id="chips" aria-label="دسته‌بندی محصولات"></nav>
-  <p class="count-line" id="countLine"></p>
-  <main class="grid" id="grid"></main>
-  <div class="empty" id="emptyState">
-    <span class="big">🔍</span>
-    محصولی پیدا نشد 😕
-    <br /><span style="font-size:13px;font-weight:400">نام دیگری را امتحان کنید یا دسته‌ی «همه» را انتخاب کنید.</span>
-  </div>
-  <footer>
-    <div class="pay">💳 <b>پرداخت:</b> HesabPay | AtomaPay | Binance | کارت‌به‌کارت<br />ادامه‌ی خرید در چت ربات انجام می‌شود.</div>
-    <p class="support">🎧 پشتیبانی در چت ربات — برای هر سوال یا مشکلی، در چت ربات پیام بدهید.</p>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-slate-800/80 py-8 text-center text-xs sm:text-sm text-slate-500">
+    <p>© 2026 <strong>DOST — Dehqan Online Store</strong>. تمامی حقوق محفوظ است.</p>
   </footer>
-</div>
-<script>
-(function(){
-  "use strict";
-  var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
-  if (tg) {
-    try {
-      tg.ready();
-      tg.expand();
-      var tp = tg.themeParams || {};
-      var root = document.documentElement.style;
-      if (tp.bg_color) root.setProperty("--tg-bg", tp.bg_color);
-      if (tg.setHeaderColor) { try { tg.setHeaderColor("#08322b"); } catch(e){} }
-      if (tg.setBackgroundColor) { try { tg.setBackgroundColor("#e9f4f0"); } catch(e){} }
-    } catch(e){}
-  }
-  var CATEGORIES = {
-    ai:     "🤖 هوش مصنوعی",
-    design: "🎨 طراحی و تدوین",
-    edu:    "🎓 آموزش",
-    fun:    "🎬 سرگرمی",
-    vpn:    "🌐 VPN",
-    growth: "📈 رشد پیج"
-  };
-  var PRODUCTS = [
-    { name:"Google Gemini (Gemini 4 Argon + Flow)", duration:"۱۸ ماهه", price:190,  cat:"ai",     icon:"💎", blurb:"قوی‌ترین مدل گوگل + ساخت ویدیو با Google Flow؛ ستاره‌ی فروشگاه ما!", activation:"email" },
-    { name:"ChatGPT Plus", duration:"۱ ماهه",  price:1200, cat:"ai",     icon:"🧠", blurb:"نسخه‌ی پولی چت‌جی‌پی‌تی: سریع‌تر، هوشمندتر، بدون محدودیت آزاردهنده.", activation:"email" },
-    { name:"Grok AI", duration:"۶ ماهه",  price:4500, cat:"ai",     icon:"⚡", blurb:"هوش مصنوعی X با پاسخ‌های لحظه‌ای و بدون سانسور اضافی.", activation:"email" },
-    { name:"ElevenLabs", duration:"۵۰٬۰۰۰ کریدیت صدا", price:500, cat:"ai", icon:"🎙", blurb:"ساخت صدای حرفه‌ای و دوبله با هوش مصنوعی — ۵۰ هزار کریدیت.", activation:"email" },
-    { name:"Canva Pro", duration:"۱ ساله",  price:30,   cat:"design", icon:"🎨", blurb:"همه‌ی قالب‌ها، عکس‌ها و ابزارهای پریمیوم کنوا برای طراحی‌های حرفه‌ای.", activation:"email" },
-    { name:"CapCut Pro", duration:"۱ ماهه",  price:180,  cat:"design", icon:"🎬", blurb:"بدون واترمارک + افکت‌ها و ترنزیشن‌های پریمیوم برای ویدیوهای وایرال.", activation:"id" },
-    { name:"Coursera Plus", duration:"۱ ساله",  price:390,  cat:"edu",    icon:"🎓", blurb:"هزاران کورس از بهترین دانشگاه‌های جهان همراه با سرتیفیکیت رسمی.", activation:"email" },
-    { name:"Netflix", duration:"۱ ماهه",  price:350,  cat:"fun",    icon:"🍿", blurb:"فیلم و سریال روز دنیا با کیفیت بالا، روی ایمیل شخصی‌تان.", activation:"email" },
-    { name:"Spotify Premium", duration:"۱ ساله",  price:1600, cat:"fun",    icon:"🎵", blurb:"موسیقی بدون تبلیغ، دانلود آفلاین و کیفیت صدای عالی — یک سال کامل.", activation:"email" },
-    { name:"افزایش ۱۰۰۰ فالوور", duration:"تدریجی و واقعی", price:100, cat:"growth", icon:"📈", blurb:"رشد واقعی و تدریجی پیج‌تان؛ شروع سریع بعد از ثبت سفارش.", activation:"id" },
-    { name:"Surfshark VPN", duration:"۳ ماهه",  price:230,  cat:"vpn",    icon:"🦈", blurb:"اینترنت آزاد و امن، سرعت بالا و اتصال چند دستگاه هم‌زمان.", activation:"email" },
-    { name:"NordVPN", duration:"۳ ماهه",  price:320,  cat:"vpn",    icon:"🛡", blurb:"یکی از امن‌ترین VPNهای جهان؛ حریم خصوصی و سرعت در کنار هم.", activation:"email" },
-    { name:"Cupcut pro", duration:"1 ماهه",  price:300,  cat:"design", icon:"🎬", blurb:"اشتراک پریمیوم کپ‌کات", activation:"id" }
-  ];
-  var BOT_URL = "https://t.me/DostStoreBot";
-  var activeCat = "all";
-  var query = "";
-  var grid = document.getElementById("grid");
-  var chipsEl = document.getElementById("chips");
-  var emptyEl = document.getElementById("emptyState");
-  var countLine = document.getElementById("countLine");
-  var searchInput = document.getElementById("searchInput");
-  function fmtPrice(n){
-    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-  function buyUrl(index){
-    return BOT_URL + "?start=g" + index;
-  }
-  function openBuy(index){
-    var url = buyUrl(index);
-    if (tg && tg.openTelegramLink) {
-      tg.openTelegramLink(url);
-      setTimeout(function(){ try { tg.close(); } catch(e){} }, 150);
-    } else {
-      window.location.href = url;
+
+  <!-- Store Logic (Synced with bot.py) -->
+  <script>
+    const PAY_NUMBER = "+93774565535";
+    const BOT_USERNAME = "DostStoreBot";
+
+    const CATEGORIES = [
+      { code: "all", fa: "🛍 همه محصولات", ps: "🛍 ټول محصولات", en: "🛍 All Products" },
+      { code: "ai", fa: "🤖 هوش مصنوعی", ps: "🤖 مصنوعي ځیرکتیا", en: "🤖 AI" },
+      { code: "design", fa: "🎨 طراحی و تدوین", ps: "🎨 ډیزاین او اېډېټ", en: "🎨 Design & Editing" },
+      { code: "edu", fa: "🎓 آموزش", ps: "🎓 زده کړه", en: "🎓 Education" },
+      { code: "fun", fa: "🎬 سرگرمی", ps: "🎬 تفریح", en: "🎬 Entertainment" },
+      { code: "vpn", fa: "🌐 VPN", ps: "🌐 VPN", en: "🌐 VPN" },
+      { code: "growth", fa: "📈 رشد پیج", ps: "📈 د پاڼې وده", en: "📈 Page Growth" }
+    ];
+
+    // Products directly from bot.py
+    const PRODUCTS = [
+      { id: 0, name: "Google Gemini (Gemini 4 Argon + Flow)", duration: "۱۸ ماهه", price: 190, cat: "ai", icon: "💎", blurb: "قوی‌ترین مدل گوگل + ساخت ویدیو با Google Flow؛ ستاره‌ی فروشگاه ما!", act: "email", badge: "🔥 پرفروش‌ترین" },
+      { id: 1, name: "ChatGPT Plus", duration: "۱ ماهه", price: 1200, cat: "ai", icon: "🧠", blurb: "نسخه‌ی پولی چت‌جی‌پی‌تی: سریع‌تر، هوشمندتر، بدون محدودیت آزاردهنده.", act: "email" },
+      { id: 2, name: "Grok AI", duration: "۶ ماهه", price: 4500, cat: "ai", icon: "⚡", blurb: "هوش مصنوعی X با پاسخ‌های لحظه‌ای و بدون سانسور اضافی.", act: "email" },
+      { id: 3, name: "ElevenLabs", duration: "۵۰٬۰۰۰ کریدیت صدا", price: 500, cat: "ai", icon: "🎙", blurb: "ساخت صدای حرفه‌ای و دوبله با هوش مصنوعی — ۵۰ هزار کریدیت.", act: "email" },
+      { id: 4, name: "Canva Pro", duration: "۱ ساله", price: 30, cat: "design", icon: "🎨", blurb: "همه‌ی قالب‌ها، عکس‌ها و ابزارهای پریمیوم کنوا برای طراحی‌های حرفه‌ای.", act: "email" },
+      { id: 5, name: "CapCut Pro", duration: "۱ ماهه", price: 180, cat: "design", icon: "🎬", blurb: "بدون واترمارک + افکت‌ها و ترنزیشن‌های پریمیوم برای ویدیوهای وایرال.", act: "id" },
+      { id: 6, name: "Coursera Plus", duration: "۱ ساله", price: 390, cat: "edu", icon: "🎓", blurb: "هزاران کورس از بهترین دانشگاه‌های جهان همراه با سرتیفیکیت رسمی.", act: "email" },
+      { id: 7, name: "Netflix", duration: "۱ ماهه", price: 350, cat: "fun", icon: "🍿", blurb: "فیلم و سریال روز دنیا با کیفیت بالا، روی ایمیل شخصی‌تان.", act: "email" },
+      { id: 8, name: "Spotify Premium", duration: "۱ ساله", price: 1600, cat: "fun", icon: "🎵", blurb: "موسیقی بدون تبلیغ، دانلود آفلاین و کیفیت صدای عالی — یک سال کامل.", act: "email" },
+      { id: 9, name: "افزایش ۱۰۰۰ فالوور", duration: "تدریجی و واقعی", price: 100, cat: "growth", icon: "📈", blurb: "رشد واقعی و تدریجی پیج‌تان؛ شروع سریع بعد از ثبت سفارش.", act: "id" },
+      { id: 10, name: "Surfshark VPN", duration: "۳ ماهه", price: 230, cat: "vpn", icon: "🦈", blurb: "اینترنت آزاد و امن، سرعت بالا و اتصال چند دستگاه هم‌زمان.", act: "email" },
+      { id: 11, name: "NordVPN", duration: "۳ ماهه", price: 320, cat: "vpn", icon: "🛡", blurb: "یکی از امن‌ترین VPNهای جهان؛ حریم خصوصی و سرعت در کنار هم.", act: "email" }
+    ];
+
+    const FAQS = {
+      fa: [
+        ["💳 روش‌های پرداخت چیست؟", "HesabPay و AtomaPay (شماره +93774565535)، Binance (تتر) و کارت به کارت. در مرحله‌ی پرداخت، جزئیات همان روش برایتان نمایش داده می‌شود."],
+        ["⚡ فعال‌سازی چقدر طول می‌کشد؟", "بعد از تأیید رسیدتان، اشتراک ظرف ۵ تا ۱۰ دقیقه روی ایمیل شخصی یا آیدی شما فعال می‌شود."],
+        ["📧 اشتراک روی ایمیل خودم فعال می‌شود؟", "بله؛ اشتراک مستقیم روی همان ایمیل جیمیلی فعال می‌شود که در سفارش ثبت می‌کنید — بدون پسورد آماده و بدون دردسر."],
+        ["🆔 بعضی محصولات ایمیل نمی‌خواهند؟", "درست است؛ CapCut Pro و افزایش فالوور روی آیدی (نام کاربری) شما فعال می‌شوند، نه ایمیل."],
+        ["🔄 چطور تمدید کنم؟", "ربات ۷، ۳ و ۱ روز قبل از پایان اشتراک به شما یادآوری می‌کند و با یک دکمه می‌توانید همان اشتراک را دوباره بخرید."]
+      ],
+      ps: [
+        ["💳 د پیسو ورکولو لارې کومې دي؟", "HesabPay او AtomaPay (شمېره +93774565535)، کارت په کارت او Binance."],
+        ["⚡ فعالېدل څومره وخت نیسي؟", "څومره ژر چې ستاسو رسید تایید شي، ګډون مو په ۵ تر ۱۰ دقیقو کې ستاسو پر شخصي برېښنالیک فعالېږي."],
+        ["📧 ګډون زما پر خپل برېښنالیک فعالېږي؟", "هو؛ ګډون مستقیماً پر هماغه برېښنالیک فعالېږي چې په امر کې یې ثبتوئ."],
+        ["🆔 ځینې محصولات برېښنالیک نه غواړي؟", "سم دی؛ CapCut Pro او د فالوور زیاتول ستاسو پر آیدی فعالېږي، نه پر برېښنالیک."]
+      ],
+      en: [
+        ["💳 What are the payment methods?", "HesabPay and AtomaPay (+93774565535), card-to-card and Binance (USDT TRC20)."],
+        ["⚡ How long does activation take?", "As soon as your receipt is confirmed, your subscription is activated within 5 to 10 minutes."],
+        ["📧 Is it activated on my own email?", "Yes; directly on the personal email or ID you enter during checkout."]
+      ]
+    };
+
+    const UI_TEXT = {
+      fa: {
+        menu_shop: "🛍 فروشگاه", menu_help: "ℹ️ راهنمای خرید", faq_btn: "❓ سؤالات پرتکرار", menu_support: "🎧 پشتیبانی",
+        bot_btn: "ربات تلگرام", hero_badge: "تحویل فوری ۵ تا ۱۰ دقیقه روی ایمیل شخصی شما",
+        hero_title_1: "اشتراک‌های پریمیوم جهانی در",
+        hero_sub: "پرفروش‌ترینِ فروشگاه: اشتراک ۱۸ ماهه‌ی Google Gemini فقط ۱۹۰ افغانی! اول پیش‌فاکتور را ببینید، بعد با خیال راحت پرداخت کنید.",
+        cta_shop: "🛍 مشاهده محصولات و خرید", cta_free_ai: "🎁 چت رایگان با هوش مصنوعی در ربات",
+        shop_heading: "🛍 فروشگاه اشتراک‌ها", pick_product: "محصول موردنظرتان را انتخاب کنید 👇",
+        buy_btn: "🛒 خرید این اشتراک", afn: "افغانی", dur_label: "⏳ مدت:"
+      },
+      ps: {
+        menu_shop: "🛍 پلورنځی", menu_help: "ℹ️ د پیرود لارښود", faq_btn: "❓ ډېرې پوښتنې", menu_support: "🎧 ملاتړ",
+        bot_btn: "ټلګرام ربات", hero_badge: "په ۵ تر ۱۰ دقیقو کې ستاسو پر شخصي ایمیل فعالول",
+        hero_title_1: "نړیوال پریمیوم ګډونونه په",
+        hero_sub: "تر ټولو پلورل کېدونکی: د Google Gemini ۱۸ میاشتنی ګډون یوازې ۱۹۰ افغانۍ! لومړی بل وګورئ، بیا تادیه وکړئ.",
+        cta_shop: "🛍 محصولات او پیرود", cta_free_ai: "🎁 له مصنوعي ذهانت سره وړیا چت",
+        shop_heading: "🛍 د ګډونونو پلورنځی", pick_product: "خپل محصول وټاکئ 👇",
+        buy_btn: "🛒 دا ګډون واخلئ", afn: "افغانۍ", dur_label: "⏳ موده:"
+      },
+      en: {
+        menu_shop: "🛍 Shop", menu_help: "ℹ️ Buying Guide", faq_btn: "❓ FAQ", menu_support: "🎧 Support",
+        bot_btn: "Telegram Bot", hero_badge: "Instant 5–10 min activation on your personal email",
+        hero_title_1: "Global Premium Subscriptions at",
+        hero_sub: "Best seller: 18-month Google Gemini for only 190 AFN! See your pre-invoice first, then pay safely.",
+        cta_shop: "🛍 Browse & Buy", cta_free_ai: "🎁 Free AI Chat in Telegram Bot",
+        shop_heading: "🛍 Subscription Shop", pick_product: "Choose your product 👇",
+        buy_btn: "🛒 Buy Now", afn: "AFN", dur_label: "⏳ Duration:"
+      }
+    };
+
+    const DEMO_COUPONS = {
+      "WELCOME10": { type: "pct", value: 10 },
+      "DOST20": { type: "af", value: 20 }
+    };
+
+    let currentLang = "fa";
+    let activeCat = "all";
+    let currentOrder = null;
+    const PAYMENTS = ["HesabPay", "AtomaPay", "کارت به کارت", "Binance"];
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "en" ? "ltr" : "rtl";
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const k = el.getAttribute("data-i18n");
+        if (UI_TEXT[lang][k]) el.textContent = UI_TEXT[lang][k];
+      });
+      renderCategories();
+      renderProducts();
+      renderFaq();
     }
-  }
-  function buildChips(){
-    chipsEl.innerHTML = "";
-    var defs = [{ code:"all", label:"✨ همه" }];
-    Object.keys(CATEGORIES).forEach(function(code){
-      defs.push({ code:code, label:CATEGORIES[code] });
-    });
-    defs.forEach(function(d){
-      var count = d.code === "all"
-        ? PRODUCTS.length
-        : PRODUCTS.filter(function(p){ return p.cat === d.code; }).length;
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "chip" + (activeCat === d.code ? " active" : "");
-      btn.setAttribute("data-cat", d.code);
-      btn.innerHTML = "";
-      btn.appendChild(document.createTextNode(d.label));
-      var cnt = document.createElement("span");
-      cnt.className = "cnt";
-      cnt.textContent = count;
-      btn.appendChild(cnt);
-      btn.addEventListener("click", function(){
-        activeCat = d.code;
-        buildChips();
-        render();
+
+    function renderCategories() {
+      const wrap = document.getElementById("categoryTabs");
+      wrap.innerHTML = CATEGORIES.map(c => `
+        <button onclick="selectCategory('${c.code}')"
+          class="whitespace-nowrap px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-slate-700/80 bg-slate-900/70 text-slate-300 hover:text-white transition ${activeCat === c.code ? 'cat-active' : ''}">
+          ${c[currentLang]}
+        </button>
+      `).join("");
+    }
+
+    function selectCategory(code) {
+      activeCat = code;
+      renderCategories();
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
+      const grid = document.getElementById("productGrid");
+      const t = UI_TEXT[currentLang];
+
+      const filtered = PRODUCTS.filter(p => {
+        const matchCat = activeCat === "all" || p.cat === activeCat;
+        const matchQ = !q || p.name.toLowerCase().includes(q) || p.blurb.toLowerCase().includes(q);
+        return matchCat && matchQ;
       });
-      chipsEl.appendChild(btn);
-    });
-  }
-  function render(){
-    grid.innerHTML = "";
-    var visible = 0;
-    var q = query.trim().toLowerCase();
-    PRODUCTS.forEach(function(p, index){
-      if (activeCat !== "all" && p.cat !== activeCat) return;
-      if (q) {
-        var hay = (p.name + " " + p.blurb + " " + (CATEGORIES[p.cat] || "")).toLowerCase();
-        if (hay.indexOf(q) === -1) return;
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden">
+          ${p.badge ? `<span class="absolute top-4 left-4 bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold px-3 py-1 rounded-full">${p.badge}</span>` : ''}
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-slate-800/90 border border-slate-700 flex items-center justify-center text-3xl mb-4">
+              ${p.icon}
+            </div>
+            <h4 class="text-lg font-extrabold text-white mb-1">${p.name}</h4>
+            <p class="text-xs text-sky-400 font-semibold mb-3">${t.dur_label} ${p.duration} • ${p.act === 'id' ? '🆔 فعال‌سازی روی آیدی' : '📧 فعال‌سازی روی ایمیل'}</p>
+            <p class="text-slate-300 text-sm leading-relaxed mb-5">${p.blurb}</p>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
+            <div>
+              <span class="text-xs text-slate-400 block">قیمت اشتراک</span>
+              <span class="text-2xl font-black text-white">${p.price} <small class="text-xs font-normal text-sky-400">${t.afn}</small></span>
+            </div>
+            <button onclick="openCheckout(${p.id})" class="px-5 py-3 rounded-2xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs sm:text-sm transition shadow-lg shadow-sky-500/15">
+              ${t.buy_btn}
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderFaq() {
+      const list = document.getElementById("faqList");
+      const items = FAQS[currentLang] || FAQS.fa;
+      list.innerHTML = items.map(([q, a]) => `
+        <details class="glass rounded-2xl p-4 group">
+          <summary class="font-bold text-white cursor-pointer list-none flex items-center justify-between">
+            <span>${q}</span>
+            <span class="text-sky-400 group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="text-slate-300 text-sm mt-3 leading-relaxed border-t border-slate-800 pt-3">${a}</p>
+        </details>
+      `).join("");
+    }
+
+    function normDigits(str) {
+      const fa = "۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩";
+      const en = "01234567890123456789";
+      return String(str || "").replace(/[۰-۹٠-٩]/g, ch => en[fa.indexOf(ch)]);
+    }
+
+    function openCheckout(prodId) {
+      const p = PRODUCTS.find(x => x.id === prodId);
+      if (!p) return;
+      currentOrder = {
+        prod: p,
+        gift: false,
+        name: "",
+        cred: "",
+        phone: "",
+        bump: false,
+        coupon: null,
+        discount: 0,
+        payment: "HesabPay"
+      };
+
+      document.getElementById("mProdIcon").textContent = p.icon;
+      document.getElementById("mProdTitle").textContent = `${p.name} (${p.duration})`;
+      document.getElementById("mProdPrice").textContent = `💰 قیمت: فقط ${p.price} افغانی`;
+      document.getElementById("directBotLink").href = `https://t.me/${BOT_USERNAME}?start=g${p.id}_web`;
+
+      setGift(false);
+      document.getElementById("formError").classList.add("hidden");
+      document.getElementById("modalStep1").classList.remove("hidden");
+      document.getElementById("modalStep2").classList.add("hidden");
+      document.getElementById("checkoutModal").classList.remove("hidden");
+    }
+
+    function setGift(isGift) {
+      if (!currentOrder) return;
+      currentOrder.gift = isGift;
+      const selfBtn = document.getElementById("giftSelfBtn");
+      const otherBtn = document.getElementById("giftOtherBtn");
+      if (isGift) {
+        otherBtn.className = "py-2.5 rounded-xl font-bold border border-sky-500 bg-sky-500/20 text-white";
+        selfBtn.className = "py-2.5 rounded-xl font-bold border border-slate-700 bg-slate-800/60 text-slate-300";
+      } else {
+        selfBtn.className = "py-2.5 rounded-xl font-bold border border-sky-500 bg-sky-500/20 text-white";
+        otherBtn.className = "py-2.5 rounded-xl font-bold border border-slate-700 bg-slate-800/60 text-slate-300";
       }
-      visible++;
-      var card = document.createElement("article");
-      card.className = "card";
-      var top = document.createElement("div");
-      top.className = "card-top";
-      var icon = document.createElement("div");
-      icon.className = "picon";
-      icon.textContent = p.icon;
-      icon.setAttribute("aria-hidden", "true");
-      var head = document.createElement("div");
-      var h3 = document.createElement("h3");
-      h3.textContent = p.name;
-      head.appendChild(h3);
-      var dur = document.createElement("span");
-      dur.className = "duration";
-      dur.textContent = "⏳ " + p.duration;
-      head.appendChild(dur);
-      if (p.activation === "id") {
-        var badge = document.createElement("span");
-        badge.className = "idbadge";
-        badge.textContent = "⚡️ فعال‌سازی روی آیدی";
-        head.appendChild(badge);
+      const lbl = document.getElementById("lblCred");
+      const inp = document.getElementById("inpCred");
+      if (currentOrder.prod.act === "id") {
+        lbl.textContent = "🆔 آیدی یا نام کاربری (کپ‌کات یا پیج):";
+        inp.placeholder = "username / ID";
+      } else if (isGift) {
+        lbl.textContent = "📧 ایمیل جیمیلِ گیرنده هدیه:";
+        inp.placeholder = "friend@gmail.com";
+      } else {
+        lbl.textContent = "📧 ایمیل جیمیل شما (برای فعال‌سازی):";
+        inp.placeholder = "name@gmail.com";
       }
-      top.appendChild(icon);
-      top.appendChild(head);
-      card.appendChild(top);
-      var blurb = document.createElement("p");
-      blurb.className = "blurb";
-      blurb.textContent = p.blurb;
-      card.appendChild(blurb);
-      var priceRow = document.createElement("div");
-      priceRow.className = "price-row";
-      var price = document.createElement("span");
-      price.className = "price";
-      price.textContent = fmtPrice(p.price);
-      var unit = document.createElement("small");
-      unit.textContent = "افغانی";
-      priceRow.appendChild(price);
-      priceRow.appendChild(unit);
-      card.appendChild(priceRow);
-      var buy = document.createElement("a");
-      buy.className = "buy";
-      buy.href = buyUrl(index);
-      buy.textContent = "🛒 خرید";
-      buy.setAttribute("aria-label", "خرید " + p.name);
-      buy.addEventListener("click", function(ev){
-        ev.preventDefault();
-        openBuy(index);
-      });
-      card.appendChild(buy);
-      grid.appendChild(card);
-    });
-    emptyEl.classList.toggle("show", visible === 0);
-    countLine.textContent = visible > 0 ? ("نمایش " + visible + " محصول") : "";
-  }
-  searchInput.addEventListener("input", function(){
-    query = searchInput.value || "";
-    render();
-  });
-  buildChips();
-  render();
-})();
-</script>
+    }
+
+    function goToInvoice() {
+      const name = document.getElementById("inpName").value.trim();
+      const cred = document.getElementById("inpCred").value.trim();
+      const phoneRaw = normDigits(document.getElementById("inpPhone").value.trim());
+      const digits = phoneRaw.replace(/\D/g, "");
+      const err = document.getElementById("formError");
+
+      if (name.length < 2) {
+        err.textContent = "⚠️ لطفاً نام و نام خانوادگی خود را وارد کنید.";
+        err.classList.remove("hidden");
+        return;
+      }
+      if (currentOrder.prod.act === "id") {
+        if (cred.length < 3) {
+          err.textContent = "⚠️ لطفاً آیدی یا نام کاربری معتبر وارد کنید.";
+          err.classList.remove("hidden");
+          return;
+        }
+      } else if (!/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/.test(cred)) {
+        err.textContent = "⚠️ این ایمیل معتبر نیست؛ لطفاً کامل بنویسید (مثلاً name@gmail.com).";
+        err.classList.remove("hidden");
+        return;
+      }
+      if (digits.length < 7 || digits.length > 15) {
+        err.textContent = "⚠️ شماره واتس‌اپ معتبر نیست؛ لطفاً با اعداد درست وارد کنید.";
+        err.classList.remove("hidden");
+        return;
+      }
+
+      currentOrder.name = name;
+      currentOrder.cred = cred;
+      currentOrder.phone = (phoneRaw.startsWith("+") ? "+" : "") + digits;
+
+      document.getElementById("modalStep1").classList.add("hidden");
+      document.getElementById("modalStep2").classList.remove("hidden");
+      updateInvoiceView();
+    }
+
+    function backToStep1() {
+      document.getElementById("modalStep2").classList.add("hidden");
+      document.getElementById("modalStep1").classList.remove("hidden");
+    }
+
+    function toggleBump() {
+      currentOrder.bump = !currentOrder.bump;
+      updateInvoiceView();
+    }
+
+    function applyCouponWeb() {
+      const code = normDigits(document.getElementById("inpCoupon").value).trim().toUpperCase();
+      const msg = document.getElementById("couponMsg");
+      if (DEMO_COUPONS[code]) {
+        currentOrder.coupon = code;
+        msg.textContent = `🎟 کد تخفیف ${code} اعمال شد ✅`;
+        msg.className = "text-xs text-emerald-400";
+      } else {
+        currentOrder.coupon = null;
+        msg.textContent = "ℹ️ برای بررسی کدهای اختصاصی یک‌بارمصرف، سفارش را در ربات تلگرام ادامه دهید.";
+        msg.className = "text-xs text-amber-400";
+      }
+      msg.classList.remove("hidden");
+      updateInvoiceView();
+    }
+
+    function selectPayment(m) {
+      currentOrder.payment = m;
+      updateInvoiceView();
+    }
+
+    function updateInvoiceView() {
+      const p = currentOrder.prod;
+      const bumpPrice = currentOrder.bump && p.id !== 4 ? 26 : 0;
+      const subtotal = p.price + bumpPrice;
+      let disc = 0;
+      if (currentOrder.coupon && DEMO_COUPONS[currentOrder.coupon]) {
+        const c = DEMO_COUPONS[currentOrder.coupon];
+        disc = c.type === "pct" ? Math.round(subtotal * c.value / 100) : Math.min(c.value, subtotal);
+      }
+      const total = Math.max(0, subtotal - disc);
+      currentOrder.total = total;
+
+      // Show/Hide Bump (hide if product is already Canva Pro)
+      const bumpBox = document.getElementById("bumpBox");
+      if (p.id === 4) {
+        bumpBox.classList.add("hidden");
+      } else {
+        bumpBox.classList.remove("hidden");
+        document.getElementById("bumpStatus").textContent = currentOrder.bump ? "✅ اضافه شد (حذف)" : "افزودن";
+      }
+
+      document.getElementById("invoiceBox").innerHTML = `
+        <div class="flex justify-between"><span>▫️ محصول:</span><strong class="text-white">${p.icon} ${p.name} (${p.duration})</strong></div>
+        ${currentOrder.gift ? `<div class="text-amber-300 text-xs">🎁 این سفارش هدیه است</div>` : ''}
+        ${bumpPrice ? `<div class="flex justify-between text-amber-300"><span>➕ 🎨 Canva Pro (۱ ساله):</span><strong>26 افغانی</strong></div>` : ''}
+        ${disc ? `<div class="flex justify-between text-emerald-400"><span>🎟 تخفیف (${currentOrder.coupon}):</span><strong>-${disc} افغانی</strong></div>` : ''}
+        <div class="flex justify-between border-t border-slate-800 pt-2 text-base"><span class="font-bold">▫️ مبلغ قابل پرداخت:</span><strong class="text-sky-400">${total} افغانی</strong></div>
+        <div class="flex justify-between text-xs text-slate-400 pt-1"><span>▫️ نام مشتری:</span><span>${currentOrder.name}</span></div>
+        <div class="flex justify-between text-xs text-slate-400"><span>▫️ ${p.act === 'id' ? 'آیدی فعال‌سازی' : 'ایمیل فعال‌سازی'}:</span><span class="font-mono">${currentOrder.cred}</span></div>
+        <div class="flex justify-between text-xs text-slate-400"><span>▫️ واتس‌اپ:</span><span class="font-mono">${currentOrder.phone}</span></div>
+      `;
+
+      // Payment buttons
+      document.getElementById("payMethodsGrid").innerHTML = PAYMENTS.map(m => `
+        <button onclick="selectPayment('${m}')" class="py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm border transition ${currentOrder.payment === m ? 'border-sky-500 bg-sky-500/20 text-white' : 'border-slate-700 bg-slate-900 text-slate-300'}">
+          💳 ${m}
+        </button>
+      `).join("");
+
+      // Payment instructions
+      const inst = document.getElementById("payInstructions");
+      if (currentOrder.payment === "HesabPay" || currentOrder.payment === "AtomaPay") {
+        inst.innerHTML = `
+          <p>مبلغ <strong>${total} افغانی</strong> را در <strong>${currentOrder.payment}</strong> به شماره زیر واریز کنید و سپس عکس رسید را بفرستید:</p>
+          <div class="flex items-center justify-between bg-slate-900 px-3 py-2 rounded-xl">
+            <code class="text-sky-400 font-bold text-base">${PAY_NUMBER}</code>
+            <button onclick="copyText('${PAY_NUMBER}')" class="text-xs bg-slate-800 px-2.5 py-1 rounded-lg hover:bg-slate-700">کپی شماره</button>
+          </div>
+        `;
+      } else if (currentOrder.payment === "کارت به کارت") {
+        inst.innerHTML = `<p>برای دریافت شماره کارت و واریز مبلغ <strong>${total} افغانی</strong>، روی دکمه واتس‌اپ یا ربات تلگرام در پایین کلیک کنید.</p>`;
+      } else {
+        inst.innerHTML = `<p>💸 پرداخت با تتر (شبکه <strong>Tron - TRC20</strong>): برای دریافت آدرس کیف پول و تأیید خودکار آن‌چین با TXID، دکمه ربات تلگرام را بزنید.</p>`;
+      }
+
+      // WhatsApp & Telegram Links
+      const waText = encodeURIComponent(
+        `🛒 سفارش جدید از وب‌سایت DOST\n` +
+        `▫️ محصول: ${p.name} (${p.duration})${bumpPrice ? ' + Canva Pro' : ''}\n` +
+        `▫️ مبلغ: ${total} افغانی\n` +
+        `▫️ نام: ${currentOrder.name}\n` +
+        `▫️ ${p.act === 'id' ? 'آیدی' : 'ایمیل'}: ${currentOrder.cred}\n` +
+        `▫️ واتس‌اپ: ${currentOrder.phone}\n` +
+        `▫️ روش پرداخت: ${currentOrder.payment}`
+      );
+      document.getElementById("sendReceiptWa").href = `https://wa.me/93774565535?text=${waText}`;
+      document.getElementById("sendReceiptTg").href = `https://t.me/${BOT_USERNAME}?start=g${p.id}_website`;
+    }
+
+    function closeModal() {
+      document.getElementById("checkoutModal").classList.add("hidden");
+    }
+
+    function copyText(txt) {
+      navigator.clipboard.writeText(txt);
+      alert("کپی شد: " + txt);
+    }
+
+    // Initialize
+    setLanguage("fa");
+  </script>
+  <script>
+    // Telegram Mini App integration (added on deploy): init, and route bot links
+    // through openTelegramLink with auto-close when running inside Telegram.
+    (function () {
+      var tg = window.Telegram && window.Telegram.WebApp;
+      if (tg) { try { tg.ready(); tg.expand(); } catch (e) {} }
+      document.addEventListener('click', function (ev) {
+        var a = ev.target && ev.target.closest ? ev.target.closest('a[href*="t.me/DostStoreBot"]') : null;
+        if (!a) return;
+        if (tg && tg.openTelegramLink) {
+          ev.preventDefault();
+          try { tg.openTelegramLink(a.href); } catch (e) {}
+          setTimeout(function () { try { tg.close(); } catch (e) {} }, 150);
+        }
+      }, true);
+    })();
+  </script>
 </body>
 </html>
